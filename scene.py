@@ -1,5 +1,8 @@
 from OpenGL.GL import *
+from OpenGL.GLU import *
+from PIL.Image import open
 from player import *
+import numpy
 
 class Scene:
    def __init__(self):
@@ -21,23 +24,20 @@ class Scene:
       glPushMatrix()
       glLoadIdentity()
       glDisable(GL_LIGHTING)
+      glEnable(GL_TEXTURE_2D)
 
-      glPolygonMode(GL_FRONT, GL_LINE)
-      glPolygonMode(GL_BACK, GL_LINE)
+      #glBindTexture(GL_TEXTURE_2D, self.id)
 
-      glColor4f(0, 1, 0, 0.2)
       glBegin(GL_QUADS)
       for x in range(-10, 10):
          for z in range(-10, 10):
-            glVertex3f(x, 0, z)
-            glVertex3f(x+1, 0, z)
-            glVertex3f(x+1, 0, z+1)
-            glVertex3f(x, 0, z+1)
+            glTexCoord2f(0.0, 0.0); glVertex3f(x, 0, z)
+            glTexCoord2f(1.0, 0.0); glVertex3f(x+1, 0, z)
+            glTexCoord2f(1.0, 1.0); glVertex3f(x+1, 0, z+1)
+            glTexCoord2f(0.0, 1.0); glVertex3f(x, 0, z+1)
       glEnd()
 
-      glPolygonMode(GL_FRONT, GL_FILL)
-      glPolygonMode(GL_BACK, GL_FILL)
-
+      glDisable(GL_TEXTURE_2D)
       glEnable(GL_LIGHTING)
       glPopMatrix()
 

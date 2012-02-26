@@ -33,10 +33,11 @@ class Engin(QtOpenGL.QGLWidget):
       glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
 
       glEnableClientState(GL_VERTEX_ARRAY)
-      glEnableClientState(GL_NORMAL_ARRAY)
+      glEnableClientState(GL_TEXTURE_COORD_ARRAY)
 
       self.scene = Scene()
       self.last_frame = time.time()
+      self.first_frame = True
 
       timer = QtCore.QTimer(self)
       timer.timeout.connect(self.update)
@@ -44,6 +45,10 @@ class Engin(QtOpenGL.QGLWidget):
 
 
    def update(self):
+      if self.first_frame:
+         self.load_textures()
+         self.first_frame = False
+
       dt = time.time() - self.last_frame
 
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
@@ -54,6 +59,23 @@ class Engin(QtOpenGL.QGLWidget):
       self.swapBuffers()
 
       self.last_frame = time.time()
+
+
+   def load_textures(self):
+      im = open('textures/grass1.jpg')
+      ix, iy, image = im.size[0], im.size[1], im.tostring("raw", 'RGBX', 0, -1)
+      self.id = 0
+      id = glGenTextures(1)
+      glBindTexture(GL_TEXTURE_2D, id)
+      glPixelStorei(GL_UNPACK_ALIGNMENT, 1)
+      glTexImage2D(GL_TEXTURE_2D, 0, 3, ix, iy, 0, GL_RGBA, GL_UNSIGNED_BYTE, image)
+      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP)
+      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP)
+      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT)
+      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT)
+      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
+      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
+      glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL)
 
 
    def update_keyboard(self, dt):

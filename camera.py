@@ -25,7 +25,8 @@ class Camera:
    def perspective(self):
       glMatrixMode(GL_PROJECTION)
       glLoadIdentity()
-      gluPerspective(90, 4/3, 0.1, 10)
+      gluPerspective(90, 4/3, 0.1, 30)
       gluLookAt(self.position[0], self.position[1], self.position[2],
                 self.focus[0], self.focus[1], self.focus[2],
                 0, 1, 0)
+      glMatrixMode(GL_MODELVIEW)
