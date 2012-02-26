@@ -2,7 +2,7 @@ from PyQt4 import QtCore, QtGui, QtOpenGL
 from PyQt4.QtCore import Qt
 from OpenGL import *
 from scene import *
-import random
+import time
 
 
 class Engin(QtOpenGL.QGLWidget):
@@ -36,6 +36,7 @@ class Engin(QtOpenGL.QGLWidget):
       glEnableClientState(GL_NORMAL_ARRAY)
 
       self.scene = Scene()
+      self.last_frame = time.time()
 
       timer = QtCore.QTimer(self)
       timer.timeout.connect(self.update)
@@ -43,7 +44,7 @@ class Engin(QtOpenGL.QGLWidget):
 
 
    def update(self):
-      dt = 5
+      dt = time.time() - self.last_frame
 
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
@@ -52,54 +53,15 @@ class Engin(QtOpenGL.QGLWidget):
 
       self.swapBuffers()
 
+      self.last_frame = time.time()
+
 
    def update_keyboard(self, dt):
-      if self.key_w:
-         cam = self.scene.camera
-         v = cam.focus - cam.position
-         v[1] = 0
-         theta = math.atan2(v[2], v[0])
-         cam.focus[0] += dt * 0.1 * math.cos(theta)
-         cam.focus[2] += dt * 0.1 * math.sin(theta)
-         cam.position[0] += dt * 0.1 * math.cos(theta)
-         cam.position[2] += dt * 0.1 * math.sin(theta)
-
-      if self.key_s:
-         cam = self.scene.camera
-         v = cam.focus - cam.position
-         v[1] = 0
-         theta = math.atan2(v[2], v[0])
-         cam.focus[0] -= dt * 0.1 * math.cos(theta)
-         cam.focus[2] -= dt * 0.1 * math.sin(theta)
-         cam.position[0] -= dt * 0.1 * math.cos(theta)
-         cam.position[2] -= dt * 0.1 * math.sin(theta)
-
-      if self.key_a:
-         cam = self.scene.camera
-         v = cam.focus - cam.position
-         v[1] = 0
-         q = Quaternion.new_rotate_axis(-math.pi/2, Vector3(0, 1, 0))
-         v = q * v
-         theta = math.atan2(v[2], v[0])
-         cam.focus[0] -= dt * 0.1 * math.cos(theta)
-         cam.focus[2] -= dt * 0.1 * math.sin(theta)
-         cam.position[0] -= dt * 0.1 * math.cos(theta)
-         cam.position[2] -= dt * 0.1 * math.sin(theta)
-
-      if self.key_d:
-         cam = self.scene.camera
-         v = cam.focus - cam.position
-         v[1] = 0
-         q = Quaternion.new_rotate_axis(math.pi/2, Vector3(0, 1, 0))
-         v = q * v
-         theta = math.atan2(v[2], v[0])
-         cam.focus[0] -= dt * 0.1 * math.cos(theta)
-         cam.focus[2] -= dt * 0.1 * math.sin(theta)
-         cam.position[0] -= dt * 0.1 * math.cos(theta)
-         cam.position[2] -= dt * 0.1 * math.sin(theta)
-
-      if self.key_up:
-         self.scene.camera.pitch += 0.1 * dt
+      if self.key_w:  self.scene.player.walk_forward(dt)
+      if self.key_s:  self.scene.player.walk_backward(dt)
+      if self.key_a:  self.scene.player.walk_left(dt)
+      if self.key_d:  self.scene.player.walk_right(dt)
+      if self.key_up: self.scene.player.camera.pitch += 10 * dt
 
 
    def keyPressEvent(self, evt):
@@ -111,11 +73,11 @@ class Engin(QtOpenGL.QGLWidget):
 
 
    def keyReleaseEvent(self, evt):
-      if evt.key() == Qt.Key_W:  self.key_w    = False
-      if evt.key() == Qt.Key_A:  self.key_a    = False
-      if evt.key() == Qt.Key_S:  self.key_s    = False
-      if evt.key() == Qt.Key_D:  self.key_d    = False
-      if evt.key() == Qt.Key_Up: self.key_down = False
+      if evt.key() == Qt.Key_W:  self.key_w  = False
+      if evt.key() == Qt.Key_A:  self.key_a  = False
+      if evt.key() == Qt.Key_S:  self.key_s  = False
+      if evt.key() == Qt.Key_D:  self.key_d  = False
+      if evt.key() == Qt.Key_Up: self.key_up = False
 
 
    def focusInEvent(self, evt):
@@ -146,7 +108,7 @@ class Engin(QtOpenGL.QGLWidget):
          wcx = window_x + 800.0/2
          wcy = window_y + 600.0/2
 
-         cam = self.scene.camera
+         cam = self.scene.player.camera
 
          x = pos.x() / (800.0/2)
          y = pos.y() / (600.0/2)
@@ -170,5 +132,5 @@ class Engin(QtOpenGL.QGLWidget):
 
 
    def resizeGL(self, width, height):
-      self.scene.camera.viewport(width, height)
-      self.scene.camera.update()
+      self.scene.player.camera.viewport(width, height)
+      self.scene.player.camera.update()

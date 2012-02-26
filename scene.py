@@ -1,9 +1,9 @@
 from OpenGL.GL import *
-from camera import *
+from player import *
 
 class Scene:
    def __init__(self):
-      self.camera = Camera()
+      self.player = Player()
 
 
    def update(self, dt):
@@ -13,7 +13,7 @@ class Scene:
       self.drawFloor()
 
       glLoadIdentity()
-      self.camera.update()
+      self.player.update(dt)
 
 
    def drawFloor(self):
