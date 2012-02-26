@@ -12,11 +12,55 @@ class Scene:
    def update(self, dt):
       glMatrixMode(GL_MODELVIEW)
 
+      self.draw_skybox()
       self.drawOrigin()
       self.drawFloor()
 
       glLoadIdentity()
       self.player.update(dt)
+
+
+   def draw_skybox(self):
+      glMatrixMode(GL_MODELVIEW)
+      glPushMatrix()
+      glLoadIdentity()
+      glDisable(GL_LIGHTING)
+      glEnable(GL_TEXTURE_2D)
+      glMaterialfv(GL_FRONT, GL_EMISSION, [1.0, 1.0, 1.0])
+
+      glTranslate(self.player.camera.position.x, self.player.camera.position.y, self.player.camera.position.z)
+      glScale(10, 10, 10)
+      glBegin(GL_QUADS)
+      # Front
+      glTexCoord2f(0.00, 0.33); glVertex3f(-1, -1, -1)
+      glTexCoord2f(0.00, 0.66); glVertex3f(-1, 1, -1)
+      glTexCoord2f(0.25, 0.66); glVertex3f(1, 1, -1)
+      glTexCoord2f(0.25, 0.33); glVertex3f(1, -1, -1)
+      # Right
+      glTexCoord2f(0.25, 0.33); glVertex3f(1, -1, -1)
+      glTexCoord2f(0.25, 0.66); glVertex3f(1, 1, -1)
+      glTexCoord2f(0.50, 0.66); glVertex3f(1, 1, 1)
+      glTexCoord2f(0.50, 0.33); glVertex3f(1, -1, 1)
+      # Back
+      glTexCoord2f(0.50, 0.33); glVertex3f(1, -1, 1)
+      glTexCoord2f(0.50, 0.66); glVertex3f(1, 1, 1)
+      glTexCoord2f(0.75, 0.66); glVertex3f(-1, 1, 1)
+      glTexCoord2f(0.75, 0.33); glVertex3f(-1, -1, 1)
+      # Left
+      glTexCoord2f(0.75, 0.33); glVertex3f(-1, -1, 1)
+      glTexCoord2f(0.75, 0.66); glVertex3f(-1, 1, 1)
+      glTexCoord2f(1.00, 0.66); glVertex3f(-1, 1, -1)
+      glTexCoord2f(1.00, 0.33); glVertex3f(-1, -1, -1)
+      # Top
+      glTexCoord2f(0.25, 0.66); glVertex3f(1, 1, -1)
+      glTexCoord2f(0.25, 1.00); glVertex3f(-1, 1, -1)
+      glTexCoord2f(0.50, 1.00); glVertex3f(-1, 1, 1)
+      glTexCoord2f(0.50, 0.66); glVertex3f(1, 1, 1)
+      glEnd()
+
+      glDisable(GL_TEXTURE_2D)
+      glEnable(GL_LIGHTING)
+      glPopMatrix()
 
 
    def drawFloor(self):

@@ -62,7 +62,7 @@ class Engin(QtOpenGL.QGLWidget):
 
 
    def load_textures(self):
-      im = open('textures/grass1.jpg')
+      im = open('textures/skybox.jpg')
       ix, iy, image = im.size[0], im.size[1], im.tostring("raw", 'RGBX', 0, -1)
       self.id = 0
       id = glGenTextures(1)
