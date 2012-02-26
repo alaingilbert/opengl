@@ -18,30 +18,9 @@ class Window(QtGui.QMainWindow):
    def eventFilter(self, source, evt):
       if evt.type() == QtCore.QEvent.MouseMove:
          if evt.buttons() == Qt.NoButton:
-            if self.engin.hasFocus():
-               pos = evt.pos()
-               wcx = self.x() + 800.0/2
-               wcy = self.y() + 600.0/2
-
-               if self.x() + pos.x() == wcx and self.y() + pos.y() + 22 == wcy:
-                  return QtGui.QMainWindow.eventFilter(self, source, evt)
-
-               cam = self.engin.scene.camera
-
-               x = pos.x() / (800.0/2)
-               y = pos.y() / (600.0/2)
-               x = x - 1
-               y = 1 - y
-
-               q = Quaternion.new_rotate_axis(-x * math.pi, Vector3(0, 1, 0))
-               cam.focus = cam.focus - cam.position
-               cam.focus = q * cam.focus
-               cam.focus = cam.focus + cam.position
-
-
-
-               if self.x() + pos.x() != wcx or self.y() + pos.y() + 22 != wcy:
-                  QtGui.QCursor.setPos(wcx, wcy)
+            if self.x() + evt.pos().x() == self.x() + 800.0/2 and self.y() + evt.pos().y() + 22 == self.y() + 600.0/2:
+               return QtGui.QMainWindow.eventFilter(self, source, evt)
+            self.engin.mouseMoveEvent(evt, self.x(), self.y())
 
       return QtGui.QMainWindow.eventFilter(self, source, evt)
 

@@ -2,6 +2,7 @@ from PyQt4 import QtCore, QtGui, QtOpenGL
 from PyQt4.QtCore import Qt
 from OpenGL import *
 from scene import *
+import random
 
 
 class Engin(QtOpenGL.QGLWidget):
@@ -135,8 +136,29 @@ class Engin(QtOpenGL.QGLWidget):
       pass
 
 
-   def mouseMoveEvent(self, evt):
-      print "MM"
+   def mouseMoveEvent(self, *args, **kwargs):
+      evt = args[0]
+
+      if self.hasFocus() and len(args) > 1:
+         window_x = args[1]
+         window_y = args[2]
+         pos = evt.pos()
+         wcx = window_x + 800.0/2
+         wcy = window_y + 600.0/2
+
+         cam = self.scene.camera
+
+         x = pos.x() / (800.0/2)
+         y = pos.y() / (600.0/2)
+         x = x - 1
+         y = 1 - y
+
+         q = Quaternion.new_rotate_axis(-x * math.pi, Vector3(0, 1, 0))
+         cam.focus = cam.focus - cam.position
+         cam.focus = q * cam.focus
+         cam.focus = cam.focus + cam.position
+
+         QtGui.QCursor.setPos(wcx, wcy)
 
 
    def wheelEvent(self, evt):
