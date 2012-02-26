@@ -1,13 +1,27 @@
+from euclid import *
 from camera import *
+from bullet import *
 
 
 class Player:
    def __init__(self):
       self.camera = Camera()
+      self.bullets = []
 
 
    def update(self, dt):
+      for b in self.bullets:
+         b.update(dt)
+         if b.position.z > 10 or b.position.z < -10 or \
+            b.position.x > 10 or b.position.x < -10:
+            self.bullets.remove(b)
+
       self.camera.update()
+
+
+   def fire(self):
+      self.bullets.append(Bullet(Vector3(self.camera.position.x, self.camera.position.y, self.camera.position.z),
+                                 Vector3(self.camera.focus.x, self.camera.focus.y, self.camera.focus.z)))
 
 
    def walk_forward(self, dt):

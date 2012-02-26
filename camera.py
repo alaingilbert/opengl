@@ -13,9 +13,11 @@ class Camera:
 
    def update(self):
       self.perspective()
-      glRotate(self.pitch, 1, 0, 0)
-      glRotate(self.yaw,   0, 1, 0)
-      glRotate(self.roll,  0, 0, 1)
+      glMatrixMode(GL_PROJECTION)
+      glRotatef(self.pitch, 1, 0, 0)
+      glRotatef(self.yaw,   0, 1, 0)
+      glRotatef(self.roll,  0, 0, 1)
+      glMatrixMode(GL_MODELVIEW)
 
 
    def viewport(self, width, height):

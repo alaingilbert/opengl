@@ -9,11 +9,12 @@ class Engin(QtOpenGL.QGLWidget):
    def __init__(self, parent=None):
       super(Engin, self).__init__(parent)
 
-      self.key_w  = False
-      self.key_a  = False
-      self.key_s  = False
-      self.key_d  = False
-      self.key_up = False
+      self.key_w    = False
+      self.key_a    = False
+      self.key_s    = False
+      self.key_d    = False
+      self.key_up   = False
+      self.key_down = False
 
       self.setFocusPolicy(Qt.ClickFocus)
 
@@ -79,27 +80,30 @@ class Engin(QtOpenGL.QGLWidget):
 
 
    def update_keyboard(self, dt):
-      if self.key_w:  self.scene.player.walk_forward(dt)
-      if self.key_s:  self.scene.player.walk_backward(dt)
-      if self.key_a:  self.scene.player.walk_left(dt)
-      if self.key_d:  self.scene.player.walk_right(dt)
-      if self.key_up: self.scene.player.camera.pitch += 10 * dt
+      if self.key_w:    self.scene.player.walk_forward(dt)
+      if self.key_s:    self.scene.player.walk_backward(dt)
+      if self.key_a:    self.scene.player.walk_left(dt)
+      if self.key_d:    self.scene.player.walk_right(dt)
+      if self.key_up:   self.scene.player.camera.pitch += 10 * dt
+      if self.key_down: self.scene.player.camera.pitch -= 10 * dt
 
 
    def keyPressEvent(self, evt):
-      if evt.key() == Qt.Key_W:  self.key_w  = True
-      if evt.key() == Qt.Key_A:  self.key_a  = True
-      if evt.key() == Qt.Key_S:  self.key_s  = True
-      if evt.key() == Qt.Key_D:  self.key_d  = True
-      if evt.key() == Qt.Key_Up: self.key_up = True
+      if evt.key() == Qt.Key_W:    self.key_w    = True
+      if evt.key() == Qt.Key_A:    self.key_a    = True
+      if evt.key() == Qt.Key_S:    self.key_s    = True
+      if evt.key() == Qt.Key_D:    self.key_d    = True
+      if evt.key() == Qt.Key_Up:   self.key_up   = True
+      if evt.key() == Qt.Key_Down: self.key_down = True
 
 
    def keyReleaseEvent(self, evt):
-      if evt.key() == Qt.Key_W:  self.key_w  = False
-      if evt.key() == Qt.Key_A:  self.key_a  = False
-      if evt.key() == Qt.Key_S:  self.key_s  = False
-      if evt.key() == Qt.Key_D:  self.key_d  = False
-      if evt.key() == Qt.Key_Up: self.key_up = False
+      if evt.key() == Qt.Key_W:    self.key_w    = False
+      if evt.key() == Qt.Key_A:    self.key_a    = False
+      if evt.key() == Qt.Key_S:    self.key_s    = False
+      if evt.key() == Qt.Key_D:    self.key_d    = False
+      if evt.key() == Qt.Key_Up:   self.key_up   = False
+      if evt.key() == Qt.Key_Down: self.key_down = False
 
 
    def focusInEvent(self, evt):
@@ -111,7 +115,7 @@ class Engin(QtOpenGL.QGLWidget):
 
 
    def mousePressEvent(self, evt):
-      print "MP"
+      self.scene.player.fire()
       pass
 
 
