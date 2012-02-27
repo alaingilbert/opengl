@@ -16,12 +16,45 @@ class Player:
             b.position.x > 10 or b.position.x < -10:
             self.bullets.remove(b)
 
+      #self.draw_cross()
+
       self.camera.update()
 
 
+   def draw_cross(self):
+
+      glMatrixMode(GL_PROJECTION)
+      glPushMatrix()
+      glLoadIdentity()
+      gluOrtho2D(0, 800, 0, 600)
+
+      glMatrixMode(GL_MODELVIEW)
+      glPushMatrix()
+
+      #glPushAttrib(GL_LIST_BIT)
+      #glRasterPos2i(0, 0)
+
+      glDisable(GL_LIGHTING)
+      glColor4f(1, 0, 0, 1)
+      glBegin(GL_TRIANGLES)
+      glVertex3f(-1, 0, 1)
+      glVertex3f(1, 0, 1)
+      glVertex3f(0, 1, 1)
+      glEnd()
+      glEnable(GL_LIGHTING)
+
+      #glPopAttrib()
+      glPopMatrix()
+
+      glMatrixMode(GL_PROJECTION)
+      glPopMatrix()
+
+
    def fire(self):
-      self.bullets.append(Bullet(Vector3(self.camera.position.x, self.camera.position.y, self.camera.position.z),
-                                 Vector3(self.camera.focus.x, self.camera.focus.y, self.camera.focus.z)))
+      position = Vector3(self.camera.position.x, self.camera.position.y, self.camera.position.z)
+      direction = Vector3(self.camera.focus.x, self.camera.focus.y, self.camera.focus.z)
+      bullet = Bullet(position, direction)
+      self.bullets.append(bullet)
 
 
    def walk_forward(self, dt):
