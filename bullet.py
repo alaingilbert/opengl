@@ -31,35 +31,41 @@ class Bullet:
       glRotatef(-math.degrees(theta), 0, 1, 0)
       #glRotatef(0, 0, 0, 1)
       glScalef(0.1, 0.025, 0.025)
-      glColor4f(0, 0, 1, 0.3)
+      glColor4f(0, 0, 1, 0.8)
 
 
       glBegin(GL_QUADS)
-      glVertex3f(-1, 0, 1)
-      glVertex3f(-1, 1, 1)
-      glVertex3f(1, 1, 1)
-      glVertex3f(1, 0, 1)
 
-      glVertex3f(1, 0, 1)
-      glVertex3f(1, 1, 1)
+      # Back
+      glVertex3f(-1, 0, -1)
+      glVertex3f(-1, 1, -1)
       glVertex3f(1, 1, -1)
       glVertex3f(1, 0, -1)
 
+      # Right
       glVertex3f(1, 0, -1)
       glVertex3f(1, 1, -1)
-      glVertex3f(-1, 1, -1)
-      glVertex3f(-1, 0, -1)
+      glVertex3f(1, 1, 1)
+      glVertex3f(1, 0, 1)
 
-      glVertex3f(-1, 0, -1)
-      glVertex3f(-1, 1, -1)
+      # Front
+      glVertex3f(1, 0, 1)
+      glVertex3f(1, 1, 1)
       glVertex3f(-1, 1, 1)
       glVertex3f(-1, 0, 1)
+
+      # Left
+      glVertex3f(-1, 0, 1)
+      glVertex3f(-1, 1, 1)
+      glVertex3f(-1, 1, -1)
+      glVertex3f(-1, 0, -1)
 
       # Top
-      glVertex3f(-1, 1, -1)
-      glVertex3f(1, 1, -1)
       glVertex3f(1, 1, 1)
+      glVertex3f(1, 1, -1)
+      glVertex3f(-1, 1, -1)
       glVertex3f(-1, 1, 1)
+
       glEnd()
 
 

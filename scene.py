@@ -12,7 +12,7 @@ class Scene:
    def update(self, dt):
       glMatrixMode(GL_MODELVIEW)
 
-      self.draw_skybox()
+      #self.draw_skybox()
       self.drawOrigin()
       self.drawFloor()
 
@@ -67,38 +67,118 @@ class Scene:
       glMatrixMode(GL_MODELVIEW)
       glPushMatrix()
       glLoadIdentity()
-      glDisable(GL_LIGHTING)
-      glEnable(GL_TEXTURE_2D)
 
-      #glBindTexture(GL_TEXTURE_2D, self.id)
+      glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, 15);
+      glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, (1, 0.980392, 0.54902, 1))
+      glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE)
+      glColor3f(0.929524, 0.796542, 0.178823)
 
       glBegin(GL_QUADS)
       for x in range(-10, 10):
          for z in range(-10, 10):
-            glTexCoord2f(0.0, 0.0); glVertex3f(x, 0, z)
-            glTexCoord2f(1.0, 0.0); glVertex3f(x+1, 0, z)
-            glTexCoord2f(1.0, 1.0); glVertex3f(x+1, 0, z+1)
-            glTexCoord2f(0.0, 1.0); glVertex3f(x, 0, z+1)
+            glNormal3f(0, 1, 0)
+            glVertex3f(x, 0, z)
+            glVertex3f(x, 0, z+1)
+            glVertex3f(x+1, 0, z+1)
+            glVertex3f(x+1, 0, z)
       glEnd()
+      #glDisable(GL_LIGHTING)
+      #glEnable(GL_TEXTURE_2D)
 
-      glDisable(GL_TEXTURE_2D)
-      glEnable(GL_LIGHTING)
+      ##glBindTexture(GL_TEXTURE_2D, self.id)
+
+      #glBegin(GL_QUADS)
+      #for x in range(-10, 10):
+      #   for z in range(-10, 10):
+      #      glTexCoord2f(0.0, 0.0); glVertex3f(x, 0, z)
+      #      glTexCoord2f(1.0, 0.0); glVertex3f(x+1, 0, z)
+      #      glTexCoord2f(1.0, 1.0); glVertex3f(x+1, 0, z+1)
+      #      glTexCoord2f(0.0, 1.0); glVertex3f(x, 0, z+1)
+      #glEnd()
+
+      #glDisable(GL_TEXTURE_2D)
+      #glEnable(GL_LIGHTING)
       glPopMatrix()
 
 
       glMatrixMode(GL_MODELVIEW)
       glPushMatrix()
       glLoadIdentity()
-      glDisable(GL_LIGHTING)
+      
       glBegin(GL_TRIANGLES)
-      glColor4f(1, 0, 0, 0.2)
+      glColor4f(1, 0, 0, 0.7)
       glVertex3f(0, 0, 0)
-      glColor4f(0, 1, 0, 0.2)
-      glVertex3f(0, 1, 0)
-      glColor4f(0, 0, 1, 0.2)
+      glColor4f(0, 0, 1, 0.7)
       glVertex3f(1, 1, 0)
+      glColor4f(0, 1, 0, 0.7)
+      glVertex3f(0, 1, 0)
       glEnd()
+
+      glDisable(GL_LIGHTING)
+
+      glBegin(GL_TRIANGLES)
+      glColor4f(0, 0, 1, 0.7)
+      glVertex3f(0, 0, -1)
+      glColor4f(0, 1, 0, 0.7)
+      glVertex3f(1, 1, -1)
+      glColor4f(1, 0, 0, 0.7)
+      glVertex3f(0, 1, -1)
+      glEnd()
+      
       glEnable(GL_LIGHTING)
+      glPopMatrix()
+
+
+
+      glPushMatrix()
+      glLoadIdentity()
+
+      glTranslate(-2, -0.3, 0)
+
+
+      glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, 15);
+      glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, (1, 0.980392, 0.54902, 1))
+      glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE)
+      glColor3f(0.929524, 0.796542, 0.178823)
+
+
+      glBegin(GL_QUADS)
+      # Front
+      glNormal3f(0, 0, 1)
+      glVertex3f(-1, 0, 1)
+      glVertex3f(1, 0, 1)
+      glVertex3f(1, 1, 1)
+      glVertex3f(-1, 1, 1)
+
+      # Right
+      glNormal3f(1, 0, 0)
+      glVertex3f(1, 0, 1)
+      glVertex3f(1, 0, -1)
+      glVertex3f(1, 1, -1)
+      glVertex3f(1, 1, 1)
+
+      # Back
+      glNormal3f(0, 0, -1)
+      glVertex3f(1, 0, -1)
+      glVertex3f(-1, 0, -1)
+      glVertex3f(-1, 1, -1)
+      glVertex3f(1, 1, -1)
+
+      # Left
+      glNormal3f(-1, 0, 0)
+      glVertex3f(-1, 0, -1)
+      glVertex3f(-1, 0, 1)
+      glVertex3f(-1, 1, 1)
+      glVertex3f(-1, 1, -1)
+
+      # Top
+      glNormal3f(0, 1, 0)
+      glVertex3f(-1, 1, -1)
+      glVertex3f(-1, 1, 1)
+      glVertex3f(1, 1, 1)
+      glVertex3f(1, 1, -1)
+      glEnd()
+
       glPopMatrix()
 
 

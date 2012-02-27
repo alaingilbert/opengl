@@ -9,6 +9,8 @@ class Engin(QtOpenGL.QGLWidget):
    def __init__(self, parent=None):
       super(Engin, self).__init__(parent)
 
+
+   def init(self):
       self.key_w    = False
       self.key_a    = False
       self.key_s    = False
@@ -27,14 +29,23 @@ class Engin(QtOpenGL.QGLWidget):
 
       glShadeModel(GL_SMOOTH)
 
+      glLightfv(GL_LIGHT0, GL_POSITION, (0, 1, 1, 0))
+
       glEnable(GL_DEPTH_TEST)
+      glEnable(GL_CULL_FACE)
       glEnable(GL_LIGHTING)
-      glEnable(GL_TEXTURE_2D)
+      glEnable(GL_LIGHT0)
+
+      #glEnable(GL_TEXTURE_2D)
       glEnable(GL_BLEND)
       glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
+      #glEnable(GL_NORMALIZE);
+
+      glLightModelfv(GL_LIGHT_MODEL_AMBIENT, (1, 1, 1, 1))
 
       glEnableClientState(GL_VERTEX_ARRAY)
-      glEnableClientState(GL_TEXTURE_COORD_ARRAY)
+      glEnableClientState(GL_NORMAL_ARRAY)
+      #glEnableClientState(GL_TEXTURE_COORD_ARRAY)
 
       self.scene = Scene()
       self.last_frame = time.time()
@@ -45,10 +56,14 @@ class Engin(QtOpenGL.QGLWidget):
       timer.start(60)
 
 
+   def initializeGL(self):
+      self.init()
+
+
    def update(self):
-      if self.first_frame:
-         self.load_textures()
-         self.first_frame = False
+      #if self.first_frame:
+      #   self.load_textures()
+      #   self.first_frame = False
 
       dt = time.time() - self.last_frame
 
@@ -107,7 +122,7 @@ class Engin(QtOpenGL.QGLWidget):
 
 
    def focusInEvent(self, evt):
-      print "FOCUS"
+      self.setCursor(QtGui.QCursor(Qt.BlankCursor))
 
 
    def focusOutEvent(self, evt):
@@ -137,7 +152,7 @@ class Engin(QtOpenGL.QGLWidget):
          cam = self.scene.player.camera
 
          x = pos.x() / (800.0/2)
-         y = pos.y() / (600.0/2)
+         y = (pos.y() + 22) / (600.0/2)
          x = x - 1
          y = 1 - y
 
