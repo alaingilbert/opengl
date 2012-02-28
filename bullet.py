@@ -20,6 +20,11 @@ class Bullet:
       self.position[2] += dt * speed * math.sin(theta)
 
 
+   def paint(self):
+      v = self.velocity - self.position
+      v[1] = 0
+      theta = math.atan2(v[2], v[0])
+
       glMatrixMode(GL_MODELVIEW)
       glPushMatrix()
       glDisable(GL_LIGHTING)

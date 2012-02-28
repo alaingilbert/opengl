@@ -21,6 +21,11 @@ class Player:
       self.camera.update()
 
 
+   def paint(self):
+      for b in self.bullets:
+         b.paint()
+
+
    def draw_cross(self):
 
       glMatrixMode(GL_PROJECTION)

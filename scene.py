@@ -2,22 +2,28 @@ from OpenGL.GL import *
 from OpenGL.GLU import *
 from PIL.Image import open
 from player import *
+from target import *
 import numpy
 
 class Scene:
    def __init__(self):
       self.player = Player()
+      self.sphere = Target()
 
 
    def update(self, dt):
-      glMatrixMode(GL_MODELVIEW)
+      self.player.update(dt)
 
+
+
+   def paint(self):
       #self.draw_skybox()
       self.drawOrigin()
       self.drawFloor()
-
       glLoadIdentity()
-      self.player.update(dt)
+      self.player.paint()
+      self.sphere.paint()
+
 
 
    def draw_skybox(self):
@@ -71,7 +77,7 @@ class Scene:
       glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, 15);
       glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, (1, 0.980392, 0.54902, 1))
       glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE)
-      glColor3f(0.929524, 0.796542, 0.178823)
+      glColor3f(0.8666, 0.8666, 0.8666)
 
       glBegin(GL_QUADS)
       for x in range(-10, 10):
@@ -82,6 +88,7 @@ class Scene:
             glVertex3f(x+1, 0, z+1)
             glVertex3f(x+1, 0, z)
       glEnd()
+
       #glDisable(GL_LIGHTING)
       #glEnable(GL_TEXTURE_2D)
 

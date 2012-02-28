@@ -49,10 +49,11 @@ class Engin(QtOpenGL.QGLWidget):
 
       self.scene = Scene()
       self.last_frame = time.time()
-      self.first_frame = True
+
+      self.load_textures()
 
       timer = QtCore.QTimer(self)
-      timer.timeout.connect(self.update)
+      timer.timeout.connect(self.cycle)
       timer.start(60)
 
 
@@ -60,21 +61,28 @@ class Engin(QtOpenGL.QGLWidget):
       self.init()
 
 
+   def cycle(self):
+      self.update()
+      self.paint()
+
+
    def update(self):
-      #if self.first_frame:
-      #   self.load_textures()
-      #   self.first_frame = False
-
       dt = time.time() - self.last_frame
-
-      glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
       self.update_keyboard(dt)
       self.scene.update(dt)
 
+      self.last_frame = time.time()
+
+
+   def paint(self):
+      glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+
+      self.scene.paint()
+
       self.swapBuffers()
 
-      self.last_frame = time.time()
+
 
 
    def load_textures(self):
