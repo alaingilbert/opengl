@@ -3,6 +3,7 @@ from PyQt4.QtCore import Qt
 from OpenGL import *
 from scene import *
 import time
+import random
 
 
 class Engin(QtOpenGL.QGLWidget):
@@ -71,6 +72,16 @@ class Engin(QtOpenGL.QGLWidget):
 
       self.update_keyboard(dt)
       self.scene.update(dt)
+
+      # Check collisions
+      def distance(obj1, obj2):
+         dist = ((obj1.x - obj2.x) ** 2 + (obj1.y - obj2.y)**2 + (obj1.z - obj2.z)**2) ** 0.5
+         return dist
+      for bullet in self.scene.player.bullets:
+         if self.scene.target and distance(bullet.position, self.scene.target.position) < 1:
+            self.scene.target = Target(Vector3(random.randint(0, 10), 1, random.randint(0, 10)))
+            self.scene.player.bullets.remove(bullet)
+            break
 
       self.last_frame = time.time()
 

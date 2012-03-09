@@ -8,7 +8,7 @@ import numpy
 class Scene:
    def __init__(self):
       self.player = Player()
-      self.sphere = Target()
+      self.target = Target(Vector3(3, 1, 0))
 
 
    def update(self, dt):
@@ -22,7 +22,8 @@ class Scene:
       self.drawFloor()
       glLoadIdentity()
       self.player.paint()
-      self.sphere.paint()
+      if self.target:
+         self.target.paint()
 
 
 

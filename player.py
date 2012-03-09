@@ -16,6 +16,9 @@ class Player:
             b.position.x > 10 or b.position.x < -10:
             self.bullets.remove(b)
 
+         #if collide(b, target):
+         #   self.bullets.remove(b)
+
       #self.draw_cross()
 
       self.camera.update()

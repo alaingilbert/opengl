@@ -4,9 +4,8 @@ from euclid import *
 
 
 class Target:
-   def __init__(self):
-      position = Vector3()
-      direction = Vector3()
+   def __init__(self, pos):
+      self.position = pos
 
 
    def update(self):
@@ -18,7 +17,7 @@ class Target:
       glEnable(GL_COLOR_MATERIAL)
       glPushMatrix()
       glLoadIdentity()
-      glTranslate(3, 1, 0)
+      glTranslate(self.position.x, self.position.y, self.position.z)
       glColor4f(1, 0, 0, 1)
       s = gluNewQuadric()
       gluSphere(s, 1, 20, 20)
